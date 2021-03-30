@@ -47,31 +47,56 @@ public class CRUD_DB {
     public String getId(int index){
         try {
             resultSet = statement.executeQuery("SELECT id, username, age, score FROM "+nameTable+" WHERE id='"+index+"';");
+            return String.valueOf(new StringBuilder().append(resultSet.getString("username")+resultSet.getString("age")+resultSet.getString("score")+resultSet.getString("level")));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return resultSet.toString();
+        return null;
     }
 
     public String getName(String name){
         try {
             resultSet = statement.executeQuery("SELECT id, username, age, score FROM "+nameTable+" WHERE username='"+name+"';");
+            return String.valueOf(new StringBuilder().append(resultSet.getString("username")+resultSet.getString("age")+resultSet.getString("score")+resultSet.getString("level")));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return resultSet.toString();
-    }
-
-    public String edit(JSONObject jsonObject,int index){
         return null;
     }
 
-    public String remove(JSONObject jsonObject,int index){
+    public String editId(int index){
+        try {
+            statement.execute("UPDATE FROM "+nameTable+" WHERE id='"+index+"';");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return getId(index);
+    }
+
+    public String editName(String name){
+        try {
+            statement.execute("UPDATE FROM "+nameTable+" WHERE username='"+name+"';");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return getName(name);
+    }
+
+    public String removeId(int index){
         try {
             statement.execute("DELETE FROM "+nameTable+" WHERE id='"+index+"';");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return getId(index);
+    }
+
+    public String removeName(String name){
+        try {
+            statement.execute("DELETE FROM "+nameTable+" WHERE username='"+name+"';");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return getName(name);
     }
 }

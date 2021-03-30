@@ -55,15 +55,21 @@ public class Server implements Runnable{
                         index = Integer.parseInt(inStream.readUTF());
                         getName(jsonObject);
                         break;
-                    /*case Requests.edit:
+                    case Requests.editId:
                         index = Integer.parseInt(inStream.readUTF());
-                        edit(jsonObject,index);
+                        editId(index);
                         break;
-
-                     */
-                    case Requests.remove:
+                    case Requests.editName:
                         index = Integer.parseInt(inStream.readUTF());
-                        remove(jsonObject,index);
+                        editName(jsonObject);
+                        break;
+                    case Requests.removeId:
+                        index = Integer.parseInt(inStream.readUTF());
+                        removeId(index);
+                        break;
+                    case Requests.removeName:
+                        index = Integer.parseInt(inStream.readUTF());
+                        removeName(jsonObject);
                         break;
                    /* case Requests.getFile:
                         try {
@@ -144,10 +150,22 @@ public class Server implements Runnable{
 
     }
 
-   /* private void edit(JSONObject jsonObject,int index){
+    private void editId(int index){
         try {
             System.out.println(ServerMessages.MESSAGE_EDIT);
-            crud.edit(jsonObject,index);
+            crud.editId(index);
+            System.out.println(ServerMessages.MESSAGE_USER_INFO + ServerMessages.MESSAGE_RESULT_YES);
+            outStream.writeUTF(ServerMessages.MESSAGE_USER_INFO + crud.getId(index));
+            outStream.flush();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void editName(JSONObject jsonObject){
+        try {
+            System.out.println(ServerMessages.MESSAGE_EDIT);
+            crud.editName(jsonObject.getString("username"));
             System.out.println(ServerMessages.MESSAGE_USER_INFO + ServerMessages.MESSAGE_RESULT_YES);
             outStream.writeUTF(ServerMessages.MESSAGE_USER_INFO + crud.getName(jsonObject.getString("username")));
             outStream.flush();
@@ -156,14 +174,25 @@ public class Server implements Runnable{
         }
     }
 
-    */
 
-    private void remove(JSONObject jsonObject,int index){
+    private void removeId(int index){
         try {
             System.out.println(ServerMessages.MESSAGE_REMOVE);
-            crud.remove(jsonObject,index);
+            crud.removeId(index);
             System.out.println(ServerMessages.MESSAGE_USER_INFO + ServerMessages.MESSAGE_RESULT_YES);
             outStream.writeUTF(ServerMessages.MESSAGE_USER_INFO + crud.getId(index));
+            outStream.flush();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void removeName(JSONObject jsonObject){
+        try {
+            System.out.println(ServerMessages.MESSAGE_REMOVE);
+            crud.removeName(jsonObject.getString("username"));
+            System.out.println(ServerMessages.MESSAGE_USER_INFO + ServerMessages.MESSAGE_RESULT_YES);
+            outStream.writeUTF(ServerMessages.MESSAGE_USER_INFO + crud.getName(jsonObject.getString("username")));
             outStream.flush();
         }catch (IOException e){
             e.printStackTrace();
